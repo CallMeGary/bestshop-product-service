@@ -1,9 +1,0 @@
-server:
-  port: 8401
-
-logging:
-    pattern:
-      console: "%d [${spring.application.name:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] %-5level [%thread] %logger : %msg%n"
-      file: "%d [${spring.application.name:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}] %-5level [%thread] %logger : %msg%n"
-    file: /var/log/containers/backend-application.log
-    level.org.springframework: 'OFF'

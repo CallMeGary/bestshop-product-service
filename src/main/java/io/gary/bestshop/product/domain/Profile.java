@@ -12,11 +12,11 @@ import org.hibernate.validator.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class Profile {
 
     @NotBlank
-    private String id;
+    private String username;
 
     @NotBlank
-    private String name;
+    private String nickname;
 }

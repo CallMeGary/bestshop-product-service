@@ -28,7 +28,7 @@ public class Review {
     private String comment;
 
     @NotNull
-    private Customer createdBy;
+    private Profile createdBy;
 
     private LocalDateTime createdAt;
 }

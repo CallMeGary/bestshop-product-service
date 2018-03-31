@@ -4,7 +4,7 @@ import io.gary.bestshop.product.domain.Category;
 import io.gary.bestshop.product.domain.Product;
 import io.gary.bestshop.product.domain.Review;
 import io.gary.bestshop.product.service.ProductService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     @GetMapping
     public List<Product> getProducts(@RequestParam(name = "category", required = false) Optional<Category> category) {

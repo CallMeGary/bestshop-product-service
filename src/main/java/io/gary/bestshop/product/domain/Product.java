@@ -42,7 +42,15 @@ public class Product {
     @NotNull
     private BigDecimal price;
 
+    @JsonIgnoreProperties(allowGetters = true)
+    private Integer purchaseCount = 0;
+
+    @JsonIgnoreProperties(allowGetters = true)
     private List<Review> reviews;
 
+    @JsonIgnoreProperties(allowGetters = true)
     private LocalDateTime createdAt;
+
+    @JsonIgnoreProperties(allowGetters = true)
+    private LocalDateTime lastModifiedAt;
 }

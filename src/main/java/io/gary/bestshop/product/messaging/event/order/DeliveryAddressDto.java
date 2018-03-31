@@ -1,22 +1,21 @@
-package io.gary.bestshop.product.domain;
+package io.gary.bestshop.product.messaging.event.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
-import org.hibernate.validator.constraints.NotBlank;
 
 @Data
 @Wither
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profile {
+public class DeliveryAddressDto {
 
-    @NotBlank
-    private String username;
+    private String address;
 
-    @NotBlank
-    private String nickname;
+    private String postCode;
+
+    private String receiverName;
 }

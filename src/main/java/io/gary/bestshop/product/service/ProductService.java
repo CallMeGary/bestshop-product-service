@@ -4,8 +4,9 @@ import io.gary.bestshop.product.domain.Category;
 import io.gary.bestshop.product.domain.Product;
 import io.gary.bestshop.product.domain.Review;
 import io.gary.bestshop.product.errors.ProductNotFoundException;
+import io.gary.bestshop.product.messaging.ProductEventPublisher;
 import io.gary.bestshop.product.repository.ProductRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,12 @@ import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    private final ProductEventPublisher productEventPublisher;
 
     public List<Product> getProducts(@NotNull Optional<Category> category) {
 
@@ -48,24 +51,30 @@ public class ProductService {
 
         log.info("Creating product: product={}", product);
 
-        Product toCreate = product.withId(null).withCreatedAt(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        Product toCreate = product.withId(null).withCreatedAt(now).withLastModifiedAt(now);
 
-        return productRepository.save(toCreate);
+        Product createdProduct = productRepository.save(toCreate);
+
+        return productEventPublisher.publishProductCreatedEvent(createdProduct);
     }
 
     public Product updateProduct(@NotNull String id, @NotNull @Valid Product product) {
 
         log.info("Updating product: id={}, product={}", id, product);
 
-        Product toUpdate = findProductOrThrow(id);
+        Product existingProduct = findProductOrThrow(id);
 
+        Product toUpdate = existingProduct.withLastModifiedAt(LocalDateTime.now());
         ofNullable(product.getName()).ifPresent(toUpdate::setName);
         ofNullable(product.getBrand()).ifPresent(toUpdate::setBrand);
         ofNullable(product.getPrice()).ifPresent(toUpdate::setPrice);
         ofNullable(product.getCategory()).ifPresent(toUpdate::setCategory);
         ofNullable(product.getDescription()).ifPresent(toUpdate::setDescription);
 
-        return productRepository.save(toUpdate);
+        Product updatedProduct = productRepository.save(toUpdate);
+
+        return productEventPublisher.publishProductUpdatedEvent(existingProduct, updatedProduct);
     }
 
     public void deleteProduct(@NotNull String id) {
@@ -75,6 +84,8 @@ public class ProductService {
         Product toDelete = findProductOrThrow(id);
 
         productRepository.delete(toDelete);
+
+        productEventPublisher.publishProductDeletedEvent(toDelete);
     }
 
     public Product addReview(@NotNull String id, @NotNull @Valid Review review) {
@@ -87,7 +98,20 @@ public class ProductService {
 
         reviews.add(review.withCreatedAt(LocalDateTime.now()));
 
-        return productRepository.save(product.withReviews(reviews));
+        Product updatedProduct = productRepository.save(product.withReviews(reviews));
+
+        return productEventPublisher.publishProductReviewAddedEvent(updatedProduct, review);
+    }
+
+    public void increasePurchaseCount(@NotNull String id) {
+
+        log.info("Increasing purchase count for product: id={}", id);
+
+        Product product = findProductOrThrow(id);
+
+        Integer currentPurchaseCount = ofNullable(product.getPurchaseCount()).orElse(0);
+
+        productRepository.save(product.withPurchaseCount(currentPurchaseCount + 1));
     }
 
     private Product findProductOrThrow(String id) {

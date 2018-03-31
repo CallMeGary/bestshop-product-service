@@ -8,6 +8,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class ProductNotFoundException extends RuntimeException {
 
     public ProductNotFoundException(String id) {
-        super(String.format("Product not found with id=%s", id));
+        super(String.format("ProductDto not found with id=%s", id));
     }
 }

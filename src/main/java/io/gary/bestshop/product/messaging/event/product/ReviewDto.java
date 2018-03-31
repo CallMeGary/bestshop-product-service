@@ -1,15 +1,11 @@
-package io.gary.bestshop.product.domain;
+package io.gary.bestshop.product.messaging.event.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
-import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,17 +13,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
+public class ReviewDto {
 
-    @Min(1)
-    @Max(5)
-    @NotNull
     private Integer rating;
 
-    @NotBlank
     private String comment;
 
-    @NotNull
     private String createdBy;
 
     private LocalDateTime createdAt;

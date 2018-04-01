@@ -1,9 +1,9 @@
 package io.gary.bestshop.product.messaging;
 
-import io.gary.bestshop.product.messaging.event.product.ProductCreatedEvent;
-import io.gary.bestshop.product.messaging.event.product.ProductDeletedEvent;
-import io.gary.bestshop.product.messaging.event.product.ProductReviewAddedEvent;
-import io.gary.bestshop.product.messaging.event.product.ProductUpdatedEvent;
+import io.gary.bestshop.messaging.event.product.ProductCreatedEvent;
+import io.gary.bestshop.messaging.event.product.ProductDeletedEvent;
+import io.gary.bestshop.messaging.event.product.ProductReviewAddedEvent;
+import io.gary.bestshop.messaging.event.product.ProductUpdatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;

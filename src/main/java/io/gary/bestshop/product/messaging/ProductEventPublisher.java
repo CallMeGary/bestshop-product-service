@@ -1,8 +1,13 @@
 package io.gary.bestshop.product.messaging;
 
+import io.gary.bestshop.messaging.dto.ProductDto;
+import io.gary.bestshop.messaging.dto.ReviewDto;
+import io.gary.bestshop.messaging.event.product.ProductCreatedEvent;
+import io.gary.bestshop.messaging.event.product.ProductDeletedEvent;
+import io.gary.bestshop.messaging.event.product.ProductReviewAddedEvent;
+import io.gary.bestshop.messaging.event.product.ProductUpdatedEvent;
 import io.gary.bestshop.product.domain.Product;
 import io.gary.bestshop.product.domain.Review;
-import io.gary.bestshop.product.messaging.event.product.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
